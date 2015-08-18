@@ -1,0 +1,46 @@
+{
+  "name": "band-camp",
+  "version": "0.0.0-alpha",
+  "description": "scrape the https://bandcamp.com/tag/* and album page",
+
+  "browser": {
+    "./src": false
+  },
+
+  "scripts": {
+    "start": "jasminetea --watch",
+    "test": "jasminetea --lint --cover --report",
+
+    "prepublish": "node -e \"if(process.env.TRAVIS){}else{process.exit(1)}\" && npm run compile || echo skip prepublish",
+    "compile": "coffee --bare --compile index.coffee",
+    "postcompile": "coffee --output lib --bare --compile src"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm test"
+    }
+  },
+
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "caravan": "0.0.0-alpha"
+  },
+  "devDependencies": {
+    "ghooks": "^0.3.2",
+    "jasminetea": "^0.2.1"
+  },
+  
+  "keywords": [
+    "bandcamp"
+  ],
+  "author": "59naga <i59naga@icloud.com> (http://berabou.me)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/59naga/band-camp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/59naga/band-camp/issues"
+  },
+  "homepage": "https://github.com/59naga/band-camp#readme"
+}
