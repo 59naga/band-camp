@@ -1,21 +1,32 @@
 # Dependencies
 caravan= require 'caravan'
 cheerio= require 'cheerio'
+moment= require 'moment'
 
 querystring= require 'querystring'
 
-# Environment
-api= 'https://bandcamp.com/tag/'
+# Private
+api=
+  search: 'https://bandcamp.com/search'
+  tag: 'https://bandcamp.com/tag/'
+  # Next feature
+  tags: 'https://bandcamp.com/tags'
+  discover: 'https://bandcamp.com/discover'
 
 # Public
 class Bandcamp
   constructor: (@options={})->
     @options.concurrency?= 10
 
+  fetch: ->
+    @fetchSummaries arguments...
+    .then (summaries)=>
+      @fetchAlbums summaries
+
   fetchSummaries: (tag,begin=1,end=10,sort_field='pop')->
     uris=
     for page in [begin..end]
-      uri= api+tag+'?'+querystring.stringify {
+      uri= api.tag+tag+'?'+querystring.stringify {
         page
         sort_field
       }
@@ -86,6 +97,58 @@ class Bandcamp
             tracks[i].url= keyvalue.match(/"mp3-128":"(.+?)"/)?[1]
 
           {url,title,author,license,artwork,thumbnail,tracks}
+
+  search: (q,begin=1,end=1)->
+    uris=
+    for page in [begin..end]
+      uri= api.search+'?'+querystring.stringify {
+        q
+        page
+      }
+
+    caravan.fetchAll uris,@options
+    .then (results)->
+      items= []
+
+      for result,i in results
+        unless typeof result is 'string'
+          {url:urls[i],error:result}
+
+        else
+          $= cheerio.load result
+
+          $results= $ '.result-info'
+          for result in $results
+            $result= $ result
+
+            item= {}
+            item.type= $result.find('.itemtype').eq(0).text()
+            item.url= $result.find('.itemurl').eq(0).text()
+            item.heading= $result.find('.heading').eq(0).text()
+            item.subhead= $result.find('.subhead').eq(0).text()
+            item.genre= $result.find('.genre').eq(0).text()
+            item.released= $result.find('.released').eq(0).text()
+            item.tags= $result.find('.tags').eq(0).text()
+
+            for key,value of item
+              item[key]=
+                value
+                .trim()
+                .replace /\s+/g    ,' '
+                .replace /^(genre|tags): /,''
+                .replace /^released /,''
+
+              delete item[key] if item[key] is ''
+
+            # "25 December 2012" -> "2012-12-25"
+            item.released= moment(new Date item.released).format 'YYYY-MM-DD' if item.released
+
+            # "holiday, Christmas" -> ["holiday", "Christmas"]
+            item.tags= item.tags.replace(/, /g,',').split ',' if item.tags
+
+            items.push item
+
+      items
 
 module.exports= new Bandcamp
 module.exports.Bandcamp= Bandcamp

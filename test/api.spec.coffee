@@ -6,25 +6,101 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL= 50000
 
 # Specs
 describe 'bandcamp',->
-  it '.fetchSummaries -> .fetchAlbums',(done)->
-    length= 1
+  describe '.search',->
+    it 'ARTIST',(done)->
+      bandcamp.search 'aivi-surasshu'
+      .then (results)->
+        result= results[0]
 
-    bandcamp.fetchSummaries 'vgm'
+        expect(Object.keys result).toEqual ['type','url','heading','subhead','genre','tags']
+        expect(result.type).toBe 'ARTIST'
+        expect(result.url).toBe 'http://aivi-surasshu.bandcamp.com'
+        expect(result.heading).toBe 'aivi & surasshu'
+        expect(result.subhead).toBe 'San Francisco, California'
+        expect(result.genre).toBe 'Jazz'
+        expect(result.tags).toEqual ['Jazz','videogame','prog','piano','chiptune','electronic']
+
+        done()
+
+    it 'ALBUM',(done)->
+      bandcamp.search 'birth:Daydream'
+      .then (results)->
+        result= results[0]
+
+        expect(Object.keys result).toEqual ['type','url','heading','subhead','released','tags']
+        expect(result.type).toBe 'ALBUM'
+        expect(result.url).toBe 'http://ry-ha.bandcamp.com/album/birth-daydream'
+        expect(result.heading).toBe 'birth:Daydream'
+        expect(result.subhead).toBe 'by ry_ha'
+        expect(result.released).toBe '2012-08-15'
+        expect(result.tags).toEqual ['Minimal','Noise','Japan','Ambient','Electronica','Electronic']
+
+        done()
+
+    it 'TRACK',(done)->
+      bandcamp.search 'Kiyoshi Kono Yoru/Silent Night'
+      .then (results)->
+        result= results[0]
+
+        expect(Object.keys result).toEqual ['type','url','heading','subhead','released','tags']
+        expect(result.type).toBe 'TRACK'
+        expect(result.url).toBe 'http://thehorribleholidayensemble.bandcamp.com/track/kiyoshi-kono-yoru-silent-night'
+        expect(result.heading).toBe 'Kiyoshi Kono Yoru/Silent Night'
+        expect(result.subhead).toBe 'from VOCALOID Christmas 2012 by VOCALOID'
+        expect(result.released).toBe '2012-12-25'
+        expect(result.tags).toEqual ['holiday','Christmas']
+
+        done()
+
+    it 'FAN',(done)->
+      bandcamp.search 'vocaloidict'
+      .then (results)->
+        result= results[0]
+
+        expect(Object.keys result).toEqual ['type','url','heading','genre']
+        expect(result.type).toBe 'FAN'
+        expect(result.url).toBe 'http://bandcamp.com/vocaloidict'
+        expect(result.heading).toBe 'vocaloidict'
+        expect(result.genre).toBe 'Electronic'
+
+        done()
+
+  it '.fetch',(done)->
+    length= 40
+
+    bandcamp.fetch 'vgm',1,1
+    .then (albums)->
+      expect(albums.length).toBe length
+      expect(albums[length-1].url).toBeTruthy()
+      expect(albums[length-1].title).toBeTruthy()
+      expect(albums[length-1].author).toBeTruthy()
+      expect(albums[length-1].license).toBeTruthy()
+      expect(albums[length-1].artwork).toBeTruthy()
+      expect(albums[length-1].thumbnail).toBeTruthy()
+      expect(albums[length-1].tracks.length).toBeGreaterThan 0
+
+      done()
+
+  it '.fetchSummaries -> .fetchAlbums',(done)->
+    length= 40
+
+    bandcamp.fetchSummaries 'vgm',1,1
     .then (summaries)->
       summaries.length= length# mangle for test
 
       bandcamp.fetchAlbums summaries
-      .then (albums)->
-        expect(albums.length).toBe length
-        expect(albums[length-1].url).toBeTruthy()
-        expect(albums[length-1].title).toBeTruthy()
-        expect(albums[length-1].author).toBeTruthy()
-        expect(albums[length-1].license).toBeTruthy()
-        expect(albums[length-1].artwork).toBeTruthy()
-        expect(albums[length-1].thumbnail).toBeTruthy()
-        expect(albums[length-1].tracks.length).toBeGreaterThan 0
 
-        done()
+    .then (albums)->
+      expect(albums.length).toBe length
+      expect(albums[length-1].url).toBeTruthy()
+      expect(albums[length-1].title).toBeTruthy()
+      expect(albums[length-1].author).toBeTruthy()
+      expect(albums[length-1].license).toBeTruthy()
+      expect(albums[length-1].artwork).toBeTruthy()
+      expect(albums[length-1].thumbnail).toBeTruthy()
+      expect(albums[length-1].tracks.length).toBeGreaterThan 0
+
+      done()
 
   it '.fetchSummaries',(done)->
     bandcamp.fetchSummaries 'vgm'
