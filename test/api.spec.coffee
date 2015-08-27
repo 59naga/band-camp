@@ -92,7 +92,7 @@ describe 'bandcamp',->
 
   describe '.search',->
     it 'ARTIST',(done)->
-      bandcamp.search 'aivi-surasshu'
+      bandcamp.search 'aivi-surasshu',1,1
       .then (results)->
         result= results[0]
 
@@ -114,7 +114,7 @@ describe 'bandcamp',->
         done()
 
     it 'ALBUM',(done)->
-      bandcamp.search 'birth:Daydream'
+      bandcamp.search 'birth:Daydream',1,1
       .then (results)->
         result= results[0]
 
@@ -129,7 +129,7 @@ describe 'bandcamp',->
         done()
 
     it 'TRACK',(done)->
-      bandcamp.search 'Kiyoshi Kono Yoru/Silent Night'
+      bandcamp.search 'Kiyoshi Kono Yoru/Silent Night',1,1
       .then (results)->
         result= results[0]
 
@@ -144,7 +144,7 @@ describe 'bandcamp',->
         done()
 
     it 'FAN',(done)->
-      bandcamp.search 'vocaloidict'
+      bandcamp.search 'vocaloidict',1,1
       .then (results)->
         result= results[0]
 
