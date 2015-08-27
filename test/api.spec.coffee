@@ -155,3 +155,22 @@ describe 'bandcamp',->
       expect(tracks[11].time).toBe '01:07'
 
       done()
+
+  it '.search',(done)->
+    length= 18 * 1
+
+    bandcamp.search 'flashgoodness',1,1
+    .then (results)->
+      expect(results.length).toBeLessThan length+1
+
+      result= results[0]
+      expect(result.type).toBe 'ARTIST'
+      expect(result.url).toBe 'http://store.flashygoodness.com'
+      expect(result.heading).toBe 'flashygoodness'
+      expect(result.genre).toBe 'Electronic'
+      expect(result.tags).toContain 'Electronic'
+      expect(result.tags).toContain 'flashygoodness'
+      expect(result.tags).toContain 'instrumental'
+      expect(result.tags).toContain 'soundtrack'
+
+      done()

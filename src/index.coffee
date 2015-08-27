@@ -107,7 +107,7 @@ class Bandcamp
 
           {url,title,author,license,artwork,thumbnail,fanCount,tracks}
 
-  search: (q,begin=1,end=1)->
+  search: (q,begin=1,end=10)->
     uris=
     for page in [begin..end]
       uri= api.search+'?'+querystring.stringify {
