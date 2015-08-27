@@ -18,7 +18,13 @@ describe 'bandcamp',->
         expect(result.heading).toBe 'aivi & surasshu'
         expect(result.subhead).toBe 'San Francisco, California'
         expect(result.genre).toBe 'Jazz'
-        expect(result.tags).toEqual ['Jazz','videogame','prog','piano','chiptune','electronic']
+        # order is unstable
+        expect(result.tags).toContain 'chiptune'
+        expect(result.tags).toContain 'electronic'
+        expect(result.tags).toContain 'Jazz'
+        expect(result.tags).toContain 'videogame'
+        expect(result.tags).toContain 'prog'
+        expect(result.tags).toContain 'piano'
 
         done()
 
@@ -71,18 +77,23 @@ describe 'bandcamp',->
     bandcamp.fetch 'vgm',1,1
     .then (albums)->
       expect(albums.length).toBe length
-      expect(albums[length-1].url).toBeTruthy()
-      expect(albums[length-1].title).toBeTruthy()
-      expect(albums[length-1].author).toBeTruthy()
-      expect(albums[length-1].license).toBeTruthy()
-      expect(albums[length-1].artwork).toBeTruthy()
-      expect(albums[length-1].thumbnail).toBeTruthy()
-      expect(albums[length-1].tracks.length).toBeGreaterThan 0
+
+      console.log albums
+
+      album= albums[length-1]
+      expect(album.url).toBeTruthy()
+      expect(album.title).toBeTruthy()
+      expect(album.author).toBeTruthy()
+      expect(album.license).toBeTruthy()
+      expect(album.artwork).toBeTruthy()
+      expect(album.thumbnail).toBeTruthy()
+      expect(album.fanCount).toBeGreaterThan 0
+      expect(album.tracks.length).toBeGreaterThan 0
 
       done()
 
   it '.fetchSummaries -> .fetchAlbums',(done)->
-    length= 40
+    length= 1
 
     bandcamp.fetchSummaries 'vgm',1,1
     .then (summaries)->
@@ -92,13 +103,16 @@ describe 'bandcamp',->
 
     .then (albums)->
       expect(albums.length).toBe length
-      expect(albums[length-1].url).toBeTruthy()
-      expect(albums[length-1].title).toBeTruthy()
-      expect(albums[length-1].author).toBeTruthy()
-      expect(albums[length-1].license).toBeTruthy()
-      expect(albums[length-1].artwork).toBeTruthy()
-      expect(albums[length-1].thumbnail).toBeTruthy()
-      expect(albums[length-1].tracks.length).toBeGreaterThan 0
+
+      album= albums[length-1]
+      expect(album.url).toBeTruthy()
+      expect(album.title).toBeTruthy()
+      expect(album.author).toBeTruthy()
+      expect(album.license).toBeTruthy()
+      expect(album.artwork).toBeTruthy()
+      expect(album.thumbnail).toBeTruthy()
+      expect(album.fanCount).toBeGreaterThan 0
+      expect(album.tracks.length).toBeGreaterThan 0
 
       done()
 
@@ -108,10 +122,12 @@ describe 'bandcamp',->
       length= 400# 40 * 10
 
       expect(summaries.length).toBe length
-      expect(summaries[length-1].url).toBeTruthy()
-      expect(summaries[length-1].thumbnail).toBeTruthy()
-      expect(summaries[length-1].title).toBeTruthy()
-      expect(summaries[length-1].author).toBeTruthy()
+
+      summary= summaries[length-1]
+      expect(summary.url).toBeTruthy()
+      expect(summary.thumbnail).toBeTruthy()
+      expect(summary.title).toBeTruthy()
+      expect(summary.author).toBeTruthy()
 
       done()
 
@@ -120,7 +136,7 @@ describe 'bandcamp',->
       'https://2mellomakes.bandcamp.com/album/chrono-jigga'
     ]
     .then (albums)->
-      {url,title,author,license,artwork,thumbnail,tracks}= albums[0]
+      {url,title,author,license,artwork,thumbnail,fanCount,tracks}= albums[0]
 
       expect(url).toBe 'https://2mellomakes.bandcamp.com/album/chrono-jigga'
       expect(title).toBe 'Chrono Jigga'
@@ -128,6 +144,7 @@ describe 'bandcamp',->
       expect(license).toBe 'by-nc'
       expect(artwork).toBe 'https://f1.bcbits.com/img/a2173525289_10.jpg'
       expect(thumbnail).toBe 'https://f1.bcbits.com/img/a2173525289_16.jpg'
+      expect(fanCount).toBe 0
 
       expect(tracks.length).toBe 12
       expect(tracks[0].title).toBe 'Intro'

@@ -4,6 +4,7 @@ cheerio= require 'cheerio'
 moment= require 'moment'
 
 querystring= require 'querystring'
+util= require 'util'
 
 # Private
 api=
@@ -70,7 +71,7 @@ class Bandcamp
           $= cheerio.load result
 
           title= $('#name-section h2').eq(0).text().trim()
-          author= $('#name-section a').eq(0).text().trim()
+          author= $('#name-section h3 span').eq(0).text().trim()
           
           artwork= $('#tralbumArt a').eq(0).attr 'href'
           thumbnail= $('#tralbumArt a img').eq(0).attr 'src'
@@ -96,7 +97,15 @@ class Bandcamp
           for keyvalue,i in trackUrlKeyvalues when tracks[i]
             tracks[i].url= keyvalue.match(/"mp3-128":"(.+?)"/)?[1]
 
-          {url,title,author,license,artwork,thumbnail,tracks}
+          try
+            fans= JSON.parse result.match(/TralbumFans.initialize\((.+), null, null, true, null\);/)[1]
+          catch
+            fans= []
+          # for fan in fans
+          #   fan.thumbnail= util.format 'https://f1.bcbits.com/img/%d_42.jpg',('0000000000'+fan.image_id).slice(-10)
+          fanCount= fans.length
+
+          {url,title,author,license,artwork,thumbnail,fanCount,tracks}
 
   search: (q,begin=1,end=1)->
     uris=
