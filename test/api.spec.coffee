@@ -79,8 +79,6 @@ describe 'bandcamp',->
     .then (albums)->
       expect(albums.length).toBe length
 
-      console.log albums
-
       album= albums[length-1]
       expect(album.url).toBeTruthy()
       expect(album.title).toBeTruthy()
