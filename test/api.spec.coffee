@@ -18,6 +18,7 @@ describe 'bandcamp',->
         expect(result.heading).toBe 'aivi & surasshu'
         expect(result.subhead).toBe 'San Francisco, California'
         expect(result.genre).toBe 'Jazz'
+        
         # order is unstable
         expect(result.tags).toContain 'chiptune'
         expect(result.tags).toContain 'electronic'

@@ -52,6 +52,7 @@ bandcamp.fetchAlbums([
   //     "license": "copyright",
   //     "artwork": "http://f1.bcbits.com/img/a2187335077_10.jpg",
   //     "thumbnail": "http://f1.bcbits.com/img/a2187335077_16.jpg",
+  //     "fanCount": 630,
   //     "tracks": [
   //       {
   //         "title": "Tombtorial (Tutorial)",
@@ -82,6 +83,7 @@ bandcamp.fetchSummries('vgm')
   //     "license": "copyright",
   //     "artwork": "http://f1.bcbits.com/img/a2187335077_10.jpg",
   //     "thumbnail": "http://f1.bcbits.com/img/a2187335077_16.jpg",
+  //     "fanCount": 630,
   //     "tracks": [
   //       {
   //         "title": "Tombtorial (Tutorial)",
