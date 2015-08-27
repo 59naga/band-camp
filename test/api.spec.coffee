@@ -6,72 +6,6 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL= 50000
 
 # Specs
 describe 'bandcamp',->
-  describe '.search',->
-    it 'ARTIST',(done)->
-      bandcamp.search 'aivi-surasshu'
-      .then (results)->
-        result= results[0]
-
-        expect(Object.keys result).toEqual ['type','url','heading','subhead','genre','tags']
-        expect(result.type).toBe 'ARTIST'
-        expect(result.url).toBe 'http://aivi-surasshu.bandcamp.com'
-        expect(result.heading).toBe 'aivi & surasshu'
-        expect(result.subhead).toBe 'San Francisco, California'
-        expect(result.genre).toBe 'Jazz'
-        
-        # order is unstable
-        expect(result.tags).toContain 'chiptune'
-        expect(result.tags).toContain 'electronic'
-        expect(result.tags).toContain 'Jazz'
-        expect(result.tags).toContain 'videogame'
-        expect(result.tags).toContain 'prog'
-        expect(result.tags).toContain 'piano'
-
-        done()
-
-    it 'ALBUM',(done)->
-      bandcamp.search 'birth:Daydream'
-      .then (results)->
-        result= results[0]
-
-        expect(Object.keys result).toEqual ['type','url','heading','subhead','released','tags']
-        expect(result.type).toBe 'ALBUM'
-        expect(result.url).toBe 'http://ry-ha.bandcamp.com/album/birth-daydream'
-        expect(result.heading).toBe 'birth:Daydream'
-        expect(result.subhead).toBe 'by ry_ha'
-        expect(result.released).toBe '2012-08-15'
-        expect(result.tags).toEqual ['Minimal','Noise','Japan','Ambient','Electronica','Electronic']
-
-        done()
-
-    it 'TRACK',(done)->
-      bandcamp.search 'Kiyoshi Kono Yoru/Silent Night'
-      .then (results)->
-        result= results[0]
-
-        expect(Object.keys result).toEqual ['type','url','heading','subhead','released','tags']
-        expect(result.type).toBe 'TRACK'
-        expect(result.url).toBe 'http://thehorribleholidayensemble.bandcamp.com/track/kiyoshi-kono-yoru-silent-night'
-        expect(result.heading).toBe 'Kiyoshi Kono Yoru/Silent Night'
-        expect(result.subhead).toBe 'from VOCALOID Christmas 2012 by VOCALOID'
-        expect(result.released).toBe '2012-12-25'
-        expect(result.tags).toEqual ['holiday','Christmas']
-
-        done()
-
-    it 'FAN',(done)->
-      bandcamp.search 'vocaloidict'
-      .then (results)->
-        result= results[0]
-
-        expect(Object.keys result).toEqual ['type','url','heading','genre']
-        expect(result.type).toBe 'FAN'
-        expect(result.url).toBe 'http://bandcamp.com/vocaloidict'
-        expect(result.heading).toBe 'vocaloidict'
-        expect(result.genre).toBe 'Electronic'
-
-        done()
-
   it '.fetch',(done)->
     length= 40
 
@@ -156,21 +90,68 @@ describe 'bandcamp',->
 
       done()
 
-  it '.search',(done)->
-    length= 18 * 1
+  describe '.search',->
+    it 'ARTIST',(done)->
+      bandcamp.search 'aivi-surasshu'
+      .then (results)->
+        result= results[0]
 
-    bandcamp.search 'flashgoodness',1,1
-    .then (results)->
-      expect(results.length).toBeLessThan length+1
+        expect(Object.keys result).toEqual ['type','url','heading','subhead','genre','tags']
+        expect(result.type).toBe 'ARTIST'
+        expect(result.url).toBe 'http://aivi-surasshu.bandcamp.com'
+        expect(result.heading).toBe 'aivi & surasshu'
+        expect(result.subhead).toBe 'San Francisco, California'
+        expect(result.genre).toBe 'Jazz'
+        
+        # order is unstable
+        expect(result.tags).toContain 'chiptune'
+        expect(result.tags).toContain 'electronic'
+        expect(result.tags).toContain 'Jazz'
+        expect(result.tags).toContain 'videogame'
+        expect(result.tags).toContain 'prog'
+        expect(result.tags).toContain 'piano'
 
-      result= results[0]
-      expect(result.type).toBe 'ARTIST'
-      expect(result.url).toBe 'http://store.flashygoodness.com'
-      expect(result.heading).toBe 'flashygoodness'
-      expect(result.genre).toBe 'Electronic'
-      expect(result.tags).toContain 'Electronic'
-      expect(result.tags).toContain 'flashygoodness'
-      expect(result.tags).toContain 'instrumental'
-      expect(result.tags).toContain 'soundtrack'
+        done()
 
-      done()
+    it 'ALBUM',(done)->
+      bandcamp.search 'birth:Daydream'
+      .then (results)->
+        result= results[0]
+
+        expect(Object.keys result).toEqual ['type','url','heading','subhead','released','tags']
+        expect(result.type).toBe 'ALBUM'
+        expect(result.url).toBe 'http://ry-ha.bandcamp.com/album/birth-daydream'
+        expect(result.heading).toBe 'birth:Daydream'
+        expect(result.subhead).toBe 'by ry_ha'
+        expect(result.released).toBe '2012-08-15'
+        expect(result.tags).toEqual ['Minimal','Noise','Japan','Ambient','Electronica','Electronic']
+
+        done()
+
+    it 'TRACK',(done)->
+      bandcamp.search 'Kiyoshi Kono Yoru/Silent Night'
+      .then (results)->
+        result= results[0]
+
+        expect(Object.keys result).toEqual ['type','url','heading','subhead','released','tags']
+        expect(result.type).toBe 'TRACK'
+        expect(result.url).toBe 'http://thehorribleholidayensemble.bandcamp.com/track/kiyoshi-kono-yoru-silent-night'
+        expect(result.heading).toBe 'Kiyoshi Kono Yoru/Silent Night'
+        expect(result.subhead).toBe 'from VOCALOID Christmas 2012 by VOCALOID'
+        expect(result.released).toBe '2012-12-25'
+        expect(result.tags).toEqual ['holiday','Christmas']
+
+        done()
+
+    it 'FAN',(done)->
+      bandcamp.search 'vocaloidict'
+      .then (results)->
+        result= results[0]
+
+        expect(Object.keys result).toEqual ['type','url','heading','genre']
+        expect(result.type).toBe 'FAN'
+        expect(result.url).toBe 'http://bandcamp.com/vocaloidict'
+        expect(result.heading).toBe 'vocaloidict'
+        expect(result.genre).toBe 'Electronic'
+
+        done()
