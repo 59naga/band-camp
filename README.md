@@ -58,9 +58,24 @@ bandcamp.search('flashygoodness')
 });
 ```
 
+## fetchTags() -> Promise({tags,locations})
+
+[fetch all tags](https://bandcamp.com/tags).
+
+```js
+bandcamp.fetchTags()
+.then(function(result){
+  console.log(result.tags);
+  // ["electronic","rock","experimental","alternative",...]
+
+  console.log(result.locations);
+  // ["united-kingdom","usa","california","canada",...]
+});
+```
+
 ## fetch(tag,beginPage=1,endPage=10,sortBy='pop') -> Promise(albums)
 
-shorthand of `.fetchSummries` and `.fetchAlbums`
+fetch albums using `tag` as shorthand of `.fetchSummries` and `.fetchAlbums`
 
 ```js
 bandcamp.fetch('vgm')

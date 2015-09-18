@@ -6,6 +6,14 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL= 50000
 
 # Specs
 describe 'bandcamp',->
+  it '.fetchTags',(done)->
+    bandcamp.fetchTags()
+    .then ({tags,locations})->
+      expect(tags.length).toBeGreaterThan 300
+      expect(locations.length).toBeGreaterThan 300
+
+      done()
+
   it '.fetch',(done)->
     length= 40
 

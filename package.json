@@ -1,7 +1,7 @@
 {
   "name": "band-camp",
   "version": "0.0.0",
-  "description": "scrape the https://bandcamp.com/tag/* and album page",
+  "description": "scrape the bandcamp.com",
 
   "browser": {
     "./src": false

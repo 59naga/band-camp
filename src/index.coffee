@@ -10,8 +10,8 @@ util= require 'util'
 api=
   search: 'https://bandcamp.com/search'
   tag: 'https://bandcamp.com/tag/'
-  # Next feature
   tags: 'https://bandcamp.com/tags'
+  # Next feature
   discover: 'https://bandcamp.com/discover'
 
 # Public
@@ -158,6 +158,38 @@ class Bandcamp
             items.push item
 
       items
+
+  fetchTags: ->
+    caravan.fetchAll [api.tags]
+    .then (results)->
+      result= results[0]
+
+      unless typeof result is 'string'
+        {url:urls[i],error:result}
+
+      else
+        $= cheerio.load result
+
+        tags= {}
+        $tags= $ '#tags_cloud a'
+        for tag in $tags
+          $tag= $ tag
+
+          tagName= $tag.attr('href').replace '/tag/',''
+          tags[tagName]?= true if tagName
+        tags= Object.keys tags
+
+        locations= {}
+        $locations= $ '#locations_cloud a'
+        for location in $locations
+          $location= $ location
+
+          locationName= $location.attr('href').replace '/tag/',''
+          locations[locationName]?= true if locationName
+
+        locations= Object.keys locations
+
+        {tags,locations}
 
 module.exports= new Bandcamp
 module.exports.Bandcamp= Bandcamp
