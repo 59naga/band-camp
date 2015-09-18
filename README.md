@@ -75,7 +75,7 @@ bandcamp.fetchTags()
 
 ## fetch(tag,beginPage=1,endPage=10,sortBy='pop') -> Promise(albums)
 
-fetch albums using `tag` as shorthand of `.fetchSummries` and `.fetchAlbums`
+fetch albums using `tag` as shorthand of `.fetchSummaries` and `.fetchAlbums`
 
 ```js
 bandcamp.fetch('vgm')
@@ -106,13 +106,13 @@ bandcamp.fetch('vgm')
 });
 ```
 
-## fetchSummries(tag,beginPage=1,endPage=10,sortBy='pop') -> Promise(summries)
+## fetchSummaries(tag,beginPage=1,endPage=10,sortBy='pop') -> Promise(summaries)
 
-[fetch summries](https://bandcamp.com/tag/vgm?page=1&sort_field=pop) between the `beginPage` to `endPage`.
+[fetch summaries](https://bandcamp.com/tag/vgm?page=1&sort_field=pop) between the `beginPage` to `endPage`.
 
 ```js
-bandcamp.fetchSummries('vgm').then(function(summries){
-  console.log(summries);
+bandcamp.fetchSummaries('vgm').then(function(summaries){
+  console.log(summaries);
   // [
   //  {
   //    "url": "http://dbsoundworks.bandcamp.com/album/crypt-of-the-//necrodancer-ost",
@@ -121,12 +121,12 @@ bandcamp.fetchSummries('vgm').then(function(summries){
   //    "author": "Danny Baranowsky"
   //  },
   //
-  //  (... more 399 summries... (40 album * 10 page - 1))
+  //  (... more 399 summaries... (40 album * 10 page - 1))
   // ]
 });
 ```
 
-## fetchAlbums(summriesOrUrls) -> Promise(albums)
+## fetchAlbums(summariesOrUrls) -> Promise(albums)
 
 [fetch album](https://dbsoundworks.bandcamp.com/album/crypt-of-the-necrodancer-ost) pages.
 
@@ -158,7 +158,7 @@ bandcamp.fetchAlbums([
 ```
 
 ```js
-bandcamp.fetchSummries('vgm')
+bandcamp.fetchSummaries('vgm')
 .then(function(summaries){
   return bandcamp.fetchAlbums(summaries);
 })
