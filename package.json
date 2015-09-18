@@ -1,6 +1,6 @@
 {
   "name": "band-camp",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "scrape the bandcamp.com",
 
   "browser": {
