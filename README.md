@@ -1,6 +1,6 @@
 # Bandcamp [![NPM version][npm-image]][npm] [![Build Status][travis-image]][travis] [![Coverage Status][coveralls-image]][coveralls]
 
-> scrape the [bandcamp.com](https://bandcamp.com/).
+> Scrape the search results, tags, and album tracks in the [bandcamp.com](https://bandcamp.com/).
 
 ## Installation
 
@@ -10,16 +10,40 @@ $ npm install band-camp --save
 
 # API
 
-## search(words,beginPage=1,endPage=10) -> Promise(results)
+If use the options, it has been also used as an options of the [caravan](https://github.com/59naga/caravan).
 
-[fetch search results](https://bandcamp.com/search?q=flashygoodness) between the `beginPage` to `endPage`.
+## bandcamp(tag,options) -> Promise(summaries)
+## bandcamp.summaries(tag,options) -> Promise(summaries)
+
+[fetch summaries](https://bandcamp.com/tag/vgm?page=1&sort_field=pop) between the `options.first` to `options.last`.
+
+```js
+bandcamp('vgm')
+.then((summaries)=>{
+  console.log(summaries)
+  // [
+  //  {
+  //    "url": "http://dbsoundworks.bandcamp.com/album/crypt-of-the-//necrodancer-ost",
+  //    "thumbnail": "https://f1.bcbits.com/img/a2187335077_11.jpg",
+  //    "title": "Crypt of the Necrodancer OST",
+  //    "author": "Danny Baranowsky"
+  //  },
+  //
+  //  (... more 399 summaries... (40 album * 10 page - 1))
+  // ]
+})
+```
+
+## bandcamp.search(words,options) -> Promise(results)
+
+[fetch search results](https://bandcamp.com/search?q=flashygoodness) between the `options.first` to `option.last`.
 
 ```js
 bandcamp.search('flashygoodness')
-.then(function(results){
+.then((results)=>{
   // takes a few minutes...
   
-  console.log(results);
+  console.log(results)
   // [
   //   {
   //     "type": "ARTIST",
@@ -55,86 +79,34 @@ bandcamp.search('flashygoodness')
   //   },
   //   (more results...)
   // ]
-});
+})
 ```
 
-## fetchTags() -> Promise({tags,locations})
+## tags() -> Promise({tags,locations})
 
 [fetch all tags](https://bandcamp.com/tags).
 
 ```js
-bandcamp.fetchTags()
-.then(function(result){
-  console.log(result.tags);
+bandcamp.tags()
+.then((result)=>{
+  console.log(result.tags)
   // ["electronic","rock","experimental","alternative",...]
 
-  console.log(result.locations);
+  console.log(result.locations)
   // ["united-kingdom","usa","california","canada",...]
-});
+})
 ```
 
-## fetch(tag,beginPage=1,endPage=10,sortBy='pop') -> Promise(albums)
-
-fetch albums using `tag` as shorthand of `.fetchSummaries` and `.fetchAlbums`
-
-```js
-bandcamp.fetch('vgm')
-.then(function(albums){
-  // takes a few minutes...
-  
-  console.log(albums);
-  // [
-  //   {
-  //     "url": "http://dbsoundworks.bandcamp.com/album/crypt-of-the-necrodancer-ost",
-  //     "title": "Crypt of the Necrodancer OST",
-  //     "author": "Danny Baranowsky",
-  //     "license": "copyright",
-  //     "artwork": "http://f1.bcbits.com/img/a2187335077_10.jpg",
-  //     "thumbnail": "http://f1.bcbits.com/img/a2187335077_16.jpg",
-  //     "fanCount": 630,
-  //     "tracks": [
-  //       {
-  //         "title": "Tombtorial (Tutorial)",
-  //         "url": "http://popplers5.bandcamp.com/download/track?enc=mp3-128&fsig=663eefe823139816899fcf0746ff29c7&id=415514545&stream=1&ts=1439820305.0",
-  //         "time": "03:18"
-  //       },
-  //       ...
-  //     ]
-  //   },
-  //   (... more 399 albums... (40 album * 10 page - 1))
-  // ]
-});
-```
-
-## fetchSummaries(tag,beginPage=1,endPage=10,sortBy='pop') -> Promise(summaries)
-
-[fetch summaries](https://bandcamp.com/tag/vgm?page=1&sort_field=pop) between the `beginPage` to `endPage`.
-
-```js
-bandcamp.fetchSummaries('vgm').then(function(summaries){
-  console.log(summaries);
-  // [
-  //  {
-  //    "url": "http://dbsoundworks.bandcamp.com/album/crypt-of-the-//necrodancer-ost",
-  //    "thumbnail": "https://f1.bcbits.com/img/a2187335077_11.jpg",
-  //    "title": "Crypt of the Necrodancer OST",
-  //    "author": "Danny Baranowsky"
-  //  },
-  //
-  //  (... more 399 summaries... (40 album * 10 page - 1))
-  // ]
-});
-```
-
-## fetchAlbums(summariesOrUrls) -> Promise(albums)
+## albums(summariesOrUrls,options) -> Promise(albums)
 
 [fetch album](https://dbsoundworks.bandcamp.com/album/crypt-of-the-necrodancer-ost) pages.
 
 ```js
-bandcamp.fetchAlbums([
+bandcamp.albums([
   'http://dbsoundworks.bandcamp.com/album/crypt-of-the-necrodancer-ost',
-]).then(function(albums){
-  console.log(albums);
+])
+.then((albums)=>{
+  console.log(albums)
   // [
   //   {
   //     "url": "http://dbsoundworks.bandcamp.com/album/crypt-of-the-necrodancer-ost",
@@ -154,39 +126,7 @@ bandcamp.fetchAlbums([
   //     ]
   //   }
   // ]
-});
-```
-
-```js
-bandcamp.fetchSummaries('vgm')
-.then(function(summaries){
-  return bandcamp.fetchAlbums(summaries);
 })
-.then(function(albums){
-  // takes a few minutes...
-  
-  console.log(albums);
-  // [
-  //   {
-  //     "url": "http://dbsoundworks.bandcamp.com/album/crypt-of-the-necrodancer-ost",
-  //     "title": "Crypt of the Necrodancer OST",
-  //     "author": "Danny Baranowsky",
-  //     "license": "copyright",
-  //     "artwork": "http://f1.bcbits.com/img/a2187335077_10.jpg",
-  //     "thumbnail": "http://f1.bcbits.com/img/a2187335077_16.jpg",
-  //     "fanCount": 630,
-  //     "tracks": [
-  //       {
-  //         "title": "Tombtorial (Tutorial)",
-  //         "url": "http://popplers5.bandcamp.com/download/track?enc=mp3-128&fsig=663eefe823139816899fcf0746ff29c7&id=415514545&stream=1&ts=1439820305.0",
-  //         "time": "03:18"
-  //       },
-  //       ...
-  //     ]
-  //   },
-  //   (... more 399 albums... (40 album * 10 page - 1))
-  // ]
-});
 ```
 
 License

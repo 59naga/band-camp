@@ -14,10 +14,17 @@
   "no_unnecessary_double_quotes": {
     "level": "error"
   },
+  "no_unnecessary_fat_arrows": {
+    "level": "ignore"
+  },
   "prefer_english_operator": {
     "level": "error"
   },
   "ensure_comprehensions": {
     "level": "ignore"
+  },
+  "no_debugger": {
+    "level": "error",
+    "console": true
   }
 }
