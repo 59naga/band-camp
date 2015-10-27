@@ -13,7 +13,6 @@ $ npm install band-camp --save
 If use the options, it has been also used as an options of the [caravan](https://github.com/59naga/caravan).
 
 ## bandcamp(tag,options) -> Promise(summaries)
-## bandcamp.summaries(tag,options) -> Promise(summaries)
 
 [fetch summaries](https://bandcamp.com/tag/vgm?page=1&sort_field=pop) between the `options.first` to `options.last`.
 
