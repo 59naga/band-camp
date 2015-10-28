@@ -1,7 +1,6 @@
 # Dependencies
 caravan= require 'caravan'
 cheerio= require 'cheerio'
-moment= require 'moment'
 
 querystring= require 'querystring'
 util= require 'util'
@@ -87,6 +86,7 @@ class Bandcamp
             item.released= $result.find('.released').eq(0).text()
             item.tags= $result.find('.tags').eq(0).text()
 
+            # normalize textContent
             for key,value of item
               item[key]=
                 value
@@ -96,9 +96,6 @@ class Bandcamp
                 .replace /^released /,''
 
               delete item[key] if item[key] is ''
-
-            # "25 December 2012" -> "2012-12-25"
-            item.released= moment(new Date item.released).format 'YYYY-MM-DD' if item.released
 
             # "holiday, Christmas" -> ["holiday", "Christmas"]
             item.tags= item.tags.replace(/, /g,',').split ',' if item.tags
