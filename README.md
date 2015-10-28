@@ -33,7 +33,7 @@ bandcamp('vgm')
 })
 ```
 
-## bandcamp.search(words,options) -> Promise(results)
+## .search(words,options) -> Promise(results)
 
 [fetch search results](https://bandcamp.com/search?q=flashygoodness) between the `options.first` to `option.last`.
 
@@ -81,22 +81,7 @@ bandcamp.search('flashygoodness')
 })
 ```
 
-## tags() -> Promise({tags,locations})
-
-[fetch all tags](https://bandcamp.com/tags).
-
-```js
-bandcamp.tags()
-.then((result)=>{
-  console.log(result.tags)
-  // ["electronic","rock","experimental","alternative",...]
-
-  console.log(result.locations)
-  // ["united-kingdom","usa","california","canada",...]
-})
-```
-
-## albums(summariesOrUrls,options) -> Promise(albums)
+## .albums(summariesOrUrls,options) -> Promise(albums)
 
 [fetch album](https://dbsoundworks.bandcamp.com/album/crypt-of-the-necrodancer-ost) pages.
 
@@ -125,6 +110,21 @@ bandcamp.albums([
   //     ]
   //   }
   // ]
+})
+```
+
+## .tags() -> Promise({tags,locations})
+
+[fetch all tags](https://bandcamp.com/tags).
+
+```js
+bandcamp.tags()
+.then((result)=>{
+  console.log(result.tags)
+  // ["electronic","rock","experimental","alternative",...]
+
+  console.log(result.locations)
+  // ["united-kingdom","usa","california","canada",...]
 })
 ```
 

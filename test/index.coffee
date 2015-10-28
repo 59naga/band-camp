@@ -6,14 +6,6 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL= 5000
 
 # Specs
 describe 'bandcamp',->
-  it '.tags',(done)->
-    bandcamp.tags()
-    .then ({tags,locations})->
-      expect(tags.length).toBeGreaterThan 300
-      expect(locations.length).toBeGreaterThan 300
-
-      done()
-
   it '.summaries',(done)->
     expect(bandcamp.summaries).toBe bandcamp
 
@@ -54,3 +46,40 @@ describe 'bandcamp',->
       expect(album.tracks[11].time).toBe '01:07'
 
       done()
+
+  it '.search',(done)->
+    keys= ['type','url','heading','subhead','genre','tags','released']
+    types= ['ARTIST','ALBUM','TRACK','FAN']
+
+    bandcamp.search '初音ミク'
+    .then (items)->
+      for item in items
+        expect(keys).toEqual jasmine.arrayContaining Object.keys item
+
+        expect(types).toEqual jasmine.arrayContaining [item.type]
+        expect(item.url).toBeTruthy()
+        expect(item.heading).toBeTruthy()
+
+      done()
+
+  it '.tags',(done)->
+    bandcamp.tags()
+    .then ({tags,locations})->
+      expect(tags.length).toBeGreaterThan 300
+      expect(locations.length).toBeGreaterThan 300
+
+      done()
+
+  describe 'issues',->
+    it '#1',(done)->
+      bandcamp '初音ミク'
+      .then (summaries)->
+        expect(summaries.length).toBeGreaterThan 1
+
+        summary= summaries[summaries.length-1]
+        expect(summary.url).toBeTruthy()
+        expect(summary.thumbnail).toBeTruthy()
+        expect(summary.title).toBeTruthy()
+        expect(summary.author).toBeTruthy()
+
+        done()
