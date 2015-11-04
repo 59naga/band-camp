@@ -15,6 +15,7 @@ If use the options, it has been also used as an options of the [caravan](https:/
 ## bandcamp(tag,options) -> Promise(summaries)
 
 [fetch summaries](https://bandcamp.com/tag/vgm?page=1&sort_field=pop) between the `options.first` to `options.last`.
+default 40 alubms(1 and 1).
 
 ```js
 bandcamp('vgm')
@@ -28,7 +29,7 @@ bandcamp('vgm')
   //    "author": "Danny Baranowsky"
   //  },
   //
-  //  (... more 399 summaries... (40 album * 10 page - 1))
+  //  (... more 39 summaries... (40 album * 1 page - 1))
   // ]
 })
 ```
