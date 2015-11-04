@@ -34,7 +34,6 @@ describe 'bandcamp',->
       expect(album.license).toBe 'by-nc'
       expect(album.artwork).toBe 'https://f1.bcbits.com/img/a2173525289_10.jpg'
       expect(album.thumbnail).toBe 'https://f1.bcbits.com/img/a2173525289_16.jpg'
-      expect(album.fanCount).toBe 0
 
       expect(album.tracks.length).toBe 12
       expect(album.tracks[0].title).toBe 'Intro'
@@ -44,6 +43,10 @@ describe 'bandcamp',->
       expect(album.tracks[11].title).toBe 'Outro'
       expect(album.tracks[11].url).toMatch '//popplers5.bandcamp.com/'
       expect(album.tracks[11].time).toBe '01:07'
+
+      expect(album.fans.length).toBe 0
+      expect(album.description).toBeTruthy()
+      expect(album.credits).toBeTruthy()
 
       done()
 

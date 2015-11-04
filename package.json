@@ -1,6 +1,6 @@
 {
   "name": "band-camp",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Scrape the search results, tags, and album tracks in the bandcamp.com",
 
   "main": "lib",

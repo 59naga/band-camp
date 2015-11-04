@@ -146,15 +146,17 @@ class Bandcamp
           for keyvalue,i in trackUrlKeyvalues when tracks[i]
             tracks[i].url= keyvalue.match(/"mp3-128":"(.+?)"/)?[1]
 
+          description= $('[itemprop="description"]').html()
+          credits= $('.tralbum-credits').html()
+
           try
             fans= JSON.parse result.match(/TralbumFans.initialize\((.+), null, null, true, null\);/)[1]
           catch
             fans= []
-          # for fan in fans
-          #   fan.thumbnail= util.format 'https://f1.bcbits.com/img/%d_42.jpg',('0000000000'+fan.image_id).slice(-10)
-          fanCount= fans.length
+          for fan in fans
+            fan.thumbnail= util.format 'https://f1.bcbits.com/img/%d_42.jpg',('0000000000'+fan.image_id).slice(-10)
 
-          album= {url,title,author,license,artwork,thumbnail,fanCount,tracks}
+          album= {url,title,author,license,artwork,thumbnail,tracks,fans,description,credits}
 
           album
 
